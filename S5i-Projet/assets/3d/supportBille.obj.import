@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://fs5yiwvsosyh"
+path="res://.godot/imported/supportBille.obj-73c96e7cd4e2410e1e4b50a57a46d90f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/supportBille.obj-73c96e7cd4e2410e1e4b50a57a46d90f.mesh"]
+
+source_file="res://assets/3d/supportBille.obj"
+dest_files=["res://.godot/imported/supportBille.obj-73c96e7cd4e2410e1e4b50a57a46d90f.mesh", "res://.godot/imported/supportBille.obj-73c96e7cd4e2410e1e4b50a57a46d90f.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
