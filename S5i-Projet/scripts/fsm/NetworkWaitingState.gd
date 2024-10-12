@@ -5,7 +5,7 @@ extends StateMachineState
 # Called when the state machine enters this state.
 func on_enter() -> void:
 	print("Network Waiting State entered")
-	#get_parent().current_state = $"../NetworkInitState"
+	get_parent().current_state = $"../NetworkInitState"
 
 # Called every frame when this state is active.
 func on_process(delta: float) -> void:

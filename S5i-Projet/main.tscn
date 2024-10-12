@@ -80,6 +80,10 @@ shape = SubResource("BoxShape3D_xl6l3")
 [node name="PiCar" parent="." instance=ExtResource("8_q3755")]
 transform = Transform3D(0.98182, 0, 0.189815, 0, 1, 0, -0.189815, 0, 0.98182, 2.25447, -0.00316979, 0.0711769)
 script = ExtResource("8_224st")
+metadata/AngleDirection = 0.0
+metadata/vitesse = 15.0
+metadata/sonnard = 12.0
+metadata/detect_ligne = PackedByteArray(0, 0, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="PiCar"]
 transform = Transform3D(-4.37114e-08, -0.258819, 0.965926, 0, 0.965926, 0.258819, -1, 1.13133e-08, -4.2222e-08, 2, 1, 0)

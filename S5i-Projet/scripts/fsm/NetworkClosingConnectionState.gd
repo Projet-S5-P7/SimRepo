@@ -13,7 +13,7 @@ func on_enter() -> void:
 
 # Called every frame when this state is active.
 func on_process(delta: float) -> void:
-	pass
+	print("main boucle car")
 
 # Called every physics frame when this state is active.
 func on_physics_process(delta: float) -> void:
