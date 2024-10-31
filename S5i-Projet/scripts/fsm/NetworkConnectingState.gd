@@ -4,13 +4,17 @@ extends StateMachineState
 
 # Called when the state machine enters this state.
 func on_enter() -> void:
-	print("Network Connecting State entered")
-	# You should connect to the websocket server here. With the socket variable of NetworkFSM
-	get_parent().socket.connect_to_url("ws://127.0.0.1:8765") # Port à chang
+		var socket_state = get_parent().socket.get_ready_state()
 	
+		if socket_state == WebSocketPeer.STATE_CLOSED or socket_state == WebSocketPeer.STATE_CLOSING:
+			print("Network Connecting State entered")
+			get_parent().socket.connect_to_url("ws://127.0.0.1:8765")
+		else:
+			print("Socket is already connected or in the process of connecting")
 
 # Called every frame when this state is active.
 func on_process(delta: float) -> void:
+	#print("on procese")
 	# Ne pas connecter dans on_process, seulement interroger l'état et utiliser poll
 	get_parent().socket.poll()  # Interroge les événements WebSocket
 	
@@ -18,12 +22,45 @@ func on_process(delta: float) -> void:
 	
 	if state == WebSocketPeer.STATE_CONNECTING:
 		# Could be nice to have a blinker showing that's it's trying to connect?
-		print("websocket connection ")
+		#print("websocket connection ")
+		1+1
 		
 		
 		
 	
 	elif state == WebSocketPeer.STATE_OPEN:
+		
+		while get_parent().socket.get_available_packet_count() > 0:
+		# Récupère les données sous forme de tableau d'octets (PackedByteArray)
+			var packet = get_parent().socket.get_packet()
+
+		# Convertir les données en chaîne de caractères UTF-8
+			var received_data = packet.get_string_from_utf8()
+			print(received_data)
+
+		# Optionnel : Essayer de parser les données JSON
+			var parsed_data = JSON.parse_string(received_data)
+			
+			print(parsed_data)
+			print("parsed_data")
+
+			if parsed_data.error == OK:#parsed_data.has("error") and parsed_data.error == OK:#if parsed_data.error == OK:
+				var json_dict = parsed_data.result  # Obtenir le dictionnaire des données
+				print("Données reçues sous forme de dictionnaire JSON: ", json_dict)
+
+			# Exemple d'accès aux valeurs du dictionnaire
+				if json_dict.has("status"):
+					print("angle: ", json_dict["angle"])
+				if json_dict.has("message"):
+					print("vitesse: ", json_dict["vitesse"])
+					
+					var obj = find_node_by_name(get_tree().root, "PiCar")
+					if obj != null:
+						obj.rotation_degrees = json_dict["angle"]
+						
+			else:
+				print("Erreur lors du parsing des données JSON: ", received_data)
+			
 		# Do stuff here
 		print("websocket ouvert")
 		#print(self.name)
