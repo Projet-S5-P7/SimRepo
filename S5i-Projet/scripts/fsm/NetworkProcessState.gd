@@ -13,6 +13,9 @@ func on_enter() -> void:
 
 # Called every frame when this state is active.
 func on_process(delta: float) -> void:
+	
+	
+	
 	get_parent().socket.poll()
 	var state = get_parent().socket.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:
@@ -23,6 +26,8 @@ func on_process(delta: float) -> void:
 				print("Error while parsing received string")
 			else:
 				# Do stuff here
+				print("valeur ressue")
+				#print(get_parent().data_received)
 				pass
 
 		# Send current data to send JSON packet every 50ms ish
