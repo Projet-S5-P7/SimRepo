@@ -1,12 +1,5 @@
 extends Node3D
 
-<<<<<<< Updated upstream
-var speed = 1
-var max_distance = 3
-var distance_traveled = 0
-var start_position = Vector3()
-
-=======
 var speed = 0.01
 var max_distance = 8
 var distance_traveled = 0
@@ -21,7 +14,6 @@ var avoid_duration = 100.0  # Durée de la manœuvre d’évitement
 
 var original_rotation = Vector3()
 
->>>>>>> Stashed changes
 
 var raycast: RayCast3D = null
 
@@ -34,25 +26,32 @@ func _ready():
 	
 
 	raycast.enabled = true
+	original_rotation = rotation
+	
 
 func _process(delta):
 	distance_traveled = position.distance_to(start_position)
-
-
-	if raycast and raycast.is_colliding():
-		var collision_distance = raycast.get_collision_point().distance_to(position)
-		if collision_distance <= 0.5:
-			speed = 0  
-			return  
-
 	
+	# Si on est en train d'éviter, on suit la trajectoire parabolique
+	if avoiding:
+		follow_avoidance_path(delta)
+		return
+
+	# Détecte les collisions avec RayCast3D
+	if raycast and raycast.is_colliding():
+		var collision_point = raycast.get_collision_point()
+		var collision_distance = raycast.global_transform.origin.distance_to(collision_point)
+		
+		if collision_distance <= 1.5:
+			print("Obstacle détecté !")
+			start_avoidance(collision_point)
+			return
+
+	# Mouvement normal si aucun obstacle n'est détecté
 	if distance_traveled < max_distance:
 		var direction = -transform.basis.x.normalized()
 		position += direction * speed * delta
 	else:
-<<<<<<< Updated upstream
-		speed = 0  
-=======
 		speed = 0
 
 # Initialisation de la manœuvre d’évitement
@@ -98,4 +97,3 @@ func move_and_orient(direction: Vector3):
 		
 func reset_orientation():
 	rotation = original_rotation
->>>>>>> Stashed changes
