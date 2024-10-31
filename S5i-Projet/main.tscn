@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bk5l7umgip4v5"]
+[gd_scene load_steps=23 format=3 uid="uid://bk5l7umgip4v5"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_eka3w"]
 [ext_resource type="Script" path="res://addons/finite_state_machine/scripts/finite_state_machine.gd" id="2_wl1fq"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dhw27gk6nbfgu" path="res://assets/3d/uploads_files_2176038_SHC+Free+Cybertruck/SHC Free Cybertruck.blend" id="8_q3755"]
 [ext_resource type="Script" path="res://assets/3d/uploads_files_2176038_SHC+Free+Cybertruck/shc_free_cybertruck.gd" id="8_shnkw"]
 [ext_resource type="ArrayMesh" uid="uid://fs5yiwvsosyh" path="res://assets/3d/supportBille.obj" id="8_wesit"]
+[ext_resource type="PackedScene" uid="uid://becp6khq8gjql" path="res://assets/blend/parcours.blend" id="10_ax0q4"]
 
 [sub_resource type="GDScript" id="GDScript_d2gei"]
 
@@ -105,7 +106,6 @@ shape = SubResource("BoxShape3D_arbh4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86375, -1.19209e-07, 0.58885)
 
 [node name="PiCar" parent="RigidBody3D2" instance=ExtResource("8_q3755")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("8_shnkw")
 metadata/AngleDirection = 0.0
 metadata/vitesse = 15.0
@@ -116,7 +116,7 @@ metadata/detect_ligne = PackedByteArray(0, 0, 0, 0, 0)
 transform = Transform3D(0.98182, 0, -0.189815, 0, 1, 0, 0.189815, 0, 0.98182, 0, 0, 0)
 
 [node name="SupportBille" type="MeshInstance3D" parent="RigidBody3D2/PiCar/supportBilleMain"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0801702, 0, -0.00952213)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0801703, 0, -0.00952214)
 mesh = ExtResource("8_wesit")
 skeleton = NodePath("../../../..")
 
@@ -156,3 +156,6 @@ skeleton = NodePath("../../RigidBody3D2/PiCar")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="bille"]
 shape = SubResource("SphereShape3D_e8s7s")
+
+[node name="parcours" parent="." instance=ExtResource("10_ax0q4")]
+transform = Transform3D(0.002, 0, 0, 0, 0.002, 0, 0, 0, 0.002, -1.22537, 0.0664511, 1.63697)

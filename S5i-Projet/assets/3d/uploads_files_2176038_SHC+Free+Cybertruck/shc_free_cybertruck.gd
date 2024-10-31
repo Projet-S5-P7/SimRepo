@@ -1,7 +1,7 @@
 extends Node3D
 
 var speed = 1
-var max_distance = 15
+var max_distance = 8
 var distance_traveled = 0
 var start_position = Vector3()
 
