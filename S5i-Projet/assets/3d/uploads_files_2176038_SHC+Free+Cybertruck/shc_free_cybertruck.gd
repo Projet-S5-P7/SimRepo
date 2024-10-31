@@ -17,14 +17,29 @@ func _ready():
 	
 
 	raycast.enabled = true
+	
 
 func _process(delta):
 	distance_traveled = position.distance_to(start_position)
-
+	#print("on proces")
+	
+	#raycast.cast_to = Vector3(0, 0, -3)
+	
+	
+	
 
 	if raycast and raycast.is_colliding():
-		var collision_distance = raycast.get_collision_point().distance_to(position)
-		if collision_distance <= 0.5:
+		print("vois quelque chose")
+		var collision_point = raycast.get_collision_point()
+		var collision_distance = raycast.global_transform.origin.distance_to(collision_point) #raycast.get_collision_point().distance_to(position)
+		print(collision_distance)
+		
+		var collider = raycast.get_collider()
+		if collider:
+			print("Nom de l'objet touché :", collider.name)
+		
+		if collision_distance <= 1.5:
+			print("moins de 0.5")
 			speed = 0  
 			return  
 
