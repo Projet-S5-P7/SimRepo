@@ -10,7 +10,7 @@ var avoid_start_position = Vector3()
 var avoid_end_position = Vector3()
 var avoid_direction = Vector3()
 var avoid_time = 0.0
-var avoid_duration = 1.0  # Durée de la manœuvre d’évitement
+var avoid_duration = 1000.0  # Durée de la manœuvre d’évitement
 
 var original_rotation = Vector3()
 
@@ -92,9 +92,9 @@ func move_and_orient(direction: Vector3):
 	
 	# Oriente la voiture vers la direction de déplacement
 	if direction.length() > 0:
-		look_at(position + direction, Vector3.UP)
+		#look_at(position + direction, Vector3.UP)
+		1+1
 		
 		
 func reset_orientation():
 	rotation = original_rotation
-
