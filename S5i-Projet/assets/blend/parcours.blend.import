@@ -35,10 +35,11 @@ _subresources={
 "nodes": {
 "PATH:Parcours Picar": {
 "generate/physics": true,
-"physics/layer": 2,
-"physics/mask": 2,
-"physics/physics_material_override": null,
-"physics/shape_type": 2
+"mesh_instance/layers": 31,
+"physics/layer": 15,
+"physics/mask": 15,
+"physics/physics_material_override": Object(PhysicsMaterial,"resource_local_to_scene":false,"resource_name":"","friction":1.0,"rough":false,"bounce":0.0,"absorbent":false,"script":null)
+
 }
 }
 }
