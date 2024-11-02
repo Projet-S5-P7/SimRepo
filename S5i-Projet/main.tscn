@@ -37,16 +37,17 @@ sky = SubResource("Sky_nfout")
 [sub_resource type="BoxShape3D" id="BoxShape3D_arbh4"]
 size = Vector3(0.98584, 1, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_edvqa"]
-size = Vector3(0.430176, 0.145996, 0.138184)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_opxma"]
+albedo_color = Color(0.0712895, 0.506504, 0.0673467, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_epyr7"]
-radius = 0.02
-height = 0.04
+material = SubResource("StandardMaterial3D_opxma")
+radius = 0.015
+height = 0.03
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_e8s7s"]
-margin = 0.004
-radius = 0.02
+margin = 0.0
+radius = 0.015
 
 [node name="Main" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0100098, 0.0284071, -0.0135775)
@@ -90,46 +91,46 @@ environment = SubResource("Environment_c8ocf")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94111, 0.547547, 0.595248)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526227, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.99884, 0, 2.78919)
 layers = 9
 mesh = SubResource("BoxMesh_qohui")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518551, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.999, 0, 2.789)
 shape = SubResource("BoxShape3D_arbh4")
 
-[node name="RigidBody3D2" type="RigidBody3D" parent="."]
+[node name="PiCar" parent="." instance=ExtResource("8_q3755")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86375, -1.19209e-07, 0.58885)
-
-[node name="PiCar" parent="RigidBody3D2" instance=ExtResource("8_q3755")]
 script = ExtResource("8_shnkw")
 metadata/AngleDirection = 0.0
 metadata/vitesse = 15.0
 metadata/sonnard = 12.0
 metadata/detect_ligne = PackedByteArray(0, 0, 0, 0, 0)
 
-[node name="RayCast3D" type="RayCast3D" parent="RigidBody3D2/PiCar"]
+[node name="RayCast3D" type="RayCast3D" parent="PiCar"]
 transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 1.74845e-07, 1.52855e-14, 1.74846e-07, 0.999999, -0.205094, 0.0746386, 0)
 target_position = Vector3(1, 0, 0)
 collide_with_areas = true
 debug_shape_thickness = 5
 
-[node name="plaquette" parent="RigidBody3D2/PiCar" instance=ExtResource("9_saeuv")]
+[node name="plaquette" parent="PiCar" instance=ExtResource("9_saeuv")]
+process_priority = -1
+process_physics_priority = -1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.151456, 0.110507, 0)
 
-[node name="Camera3D" type="Camera3D" parent="RigidBody3D2/PiCar"]
-transform = Transform3D(0.0903545, -0.25776, 0.961975, 8.88178e-16, 0.965926, 0.258819, -0.99591, -0.0233855, 0.0872758, 1.43384, 0.465241, 0.204471)
+[node name="Camera3D" type="Camera3D" parent="PiCar"]
+transform = Transform3D(0.0903545, -0.25776, 0.961975, 8.88178e-16, 0.965926, 0.258819, -0.99591, -0.0233854, 0.0872757, 0.41958, 0.132332, 0.13936)
 current = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
-transform = Transform3D(0.979586, 0, 0.201027, 0, 1, 0, -0.201027, 0, 0.979586, 0, 0, 0)
-shape = SubResource("BoxShape3D_edvqa")
+[node name="RigidBody3D2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86375, -1.19209e-07, 0.58885)
+gravity_scale = 0.0
 
 [node name="RigidBody3D3" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.22075, 0.547547, 0.595248)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526227, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526227, 0, 3.38442)
 layers = 9
 mesh = SubResource("BoxMesh_qohui")
 
@@ -138,13 +139,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518551, 0, 0)
 shape = SubResource("BoxShape3D_arbh4")
 
 [node name="bille" type="RigidBody3D" parent="."]
+process_priority = -1
 transform = Transform3D(1, 0, 8.9407e-08, 0, 1, 0, -8.9407e-08, 0, 1, 2.02287, 0.187652, 0.587152)
+collision_priority = -1.0
+gravity_scale = 1.571
+continuous_cd = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="bille"]
 mesh = SubResource("SphereMesh_epyr7")
-skeleton = NodePath("../../RigidBody3D2/PiCar")
+skeleton = NodePath("../../PiCar")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="bille"]
+process_priority = -1
+process_physics_priority = -1
 shape = SubResource("SphereShape3D_e8s7s")
 
 [node name="parcours" parent="." instance=ExtResource("10_ax0q4")]
