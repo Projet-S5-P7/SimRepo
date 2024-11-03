@@ -1,6 +1,6 @@
 extends Node3D
 
-var speed = 1
+
 var max_distance = 8
 var distance_traveled = 0
 var start_position = Vector3()
@@ -22,6 +22,17 @@ var droit2: RayCast3D = null
 var gauche1: RayCast3D = null
 var gauche2: RayCast3D = null
 
+const ACCELERATION_MAX = 0.05
+const VITESSE_MAX = 2
+const WHEEL_BASE = 0.3  # Distance entre les roues
+
+var speed = 0  # Vitesse actuelle
+var direction = 1  # Direction actuelle du mouvement (1 pour avancer, -1 pour reculer)
+var timer = 0  # Chronomètre pour contrôler la temporisation
+var phase = 0  # 0: accélération, 1: ralentissement
+var current_angle = 0  # Angle de rotation actuel du véhicule
+
+
 func _ready():
 	start_position = position
 	
@@ -35,20 +46,22 @@ func _ready():
 	assert(droit1 != null, "Le centre n'a pas été trouvé !")
 	droit2 = $droit2
 	assert(droit2 != null, "Le centre n'a pas été trouvé !")
-	gauche1 = $droit1
+	gauche1 = $gauche1
 	assert(gauche1 != null, "Le centre n'a pas été trouvé !")
-	gauche2 = $droit2
+	gauche2 = $gauche2
 	assert(gauche2 != null, "Le centre n'a pas été trouvé !")
 	
 
 	raycast.enabled = true
 	original_rotation = rotation
 	
+	
 
 func _process(delta):
+	move_vehicle(1, delta)
 	distance_traveled = position.distance_to(start_position)
 	
-	suiviLigne()
+	suiviLigne(delta)
 	return
 	
 	# Si on est en train d'éviter, on suit la trajectoire parabolique
@@ -117,12 +130,9 @@ func move_and_orient(direction: Vector3):
 func reset_orientation():
 	rotation = original_rotation
 	
-func suiviLigne():
+func suiviLigne(delta: float):
 	
-	
-	# Toujours avancer légèrement pour rester en mouvement
-	position += -transform.basis.x.normalized() * speed * get_process_delta_time()
-	
+
 	if centre.is_colliding() and centre.get_collider().name != "StaticBody3D":
 		print(centre.get_collider().name)
 
@@ -135,20 +145,58 @@ func suiviLigne():
 	elif droit1.is_colliding() and droit1.get_collider().name != "StaticFloor":
 		print("Collision détectée à droite 1 avec :", droit1.get_collider().name)
 		# Rotation légère vers la gauche pour se recentrer
-		rotate_y(-0.05)
+		steer_vehicle(-0.1, delta)
 
 	elif droit2.is_colliding() and droit2.get_collider().name != "StaticFloor":
 		print("Collision détectée à droite 2 avec :", droit2.get_collider().name)
 		# Rotation plus forte vers la gauche pour corriger plus rapidement
-		rotate_y(-0.1)
+		steer_vehicle(-0.7, delta)
 
 	elif gauche1.is_colliding() and gauche1.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 1 avec :", gauche1.get_collider().name)
 		# Rotation légère vers la droite pour se recentrer
-		rotate_y(0.05)
+		steer_vehicle(0.1, delta)
 
 	elif gauche2.is_colliding() and gauche2.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 2 avec :", gauche2.get_collider().name)
 		# Rotation plus forte vers la droite pour corriger plus rapidement
-		rotate_y(0.1)
+		steer_vehicle(0.7, delta)
+		
+		
+func move_vehicle(input_direction: int, delta: float):
+	if input_direction == 0:
+		# Ralentir jusqu'à ce que la vitesse atteigne zéro
+		if speed > 0:
+			speed -= ACCELERATION_MAX * delta
+			speed = max(speed, 0)
+		elif speed < 0:
+			speed += ACCELERATION_MAX * delta
+			speed = min(speed, 0)
+	elif input_direction == 1:
+		# Accélérer vers l'avant jusqu'à la vitesse maximale
+		speed += ACCELERATION_MAX * delta
+		speed = min(speed, VITESSE_MAX)
+	elif input_direction == -1:
+		# Accélérer vers l'arrière jusqu'à la vitesse maximale en sens inverse
+		speed -= ACCELERATION_MAX * delta
+		speed = max(speed, -VITESSE_MAX)
+		
+	# Appliquer la vitesse à la position
+	var movement_direction = -transform.basis.x.normalized()
+	position += movement_direction * speed * delta
+
+
+func steer_vehicle(steer_angle: float, delta: float):
+	if speed != 0:
+		# Calculer le rayon de braquage en fonction de l'angle des roues avant
+		var turn_radius = WHEEL_BASE / tan(steer_angle)
+		# Calculer la vitesse angulaire (en radians par seconde)
+		var angular_velocity = speed / turn_radius
+		
+		# Appliquer la rotation
+		current_angle += angular_velocity * delta * direction
+		
+		# Appliquer la rotation au véhicule
+		var rotation_matrix = Basis(Vector3(0, 1, 0), angular_velocity * delta * direction)
+		transform.basis = rotation_matrix * transform.basis
 	
