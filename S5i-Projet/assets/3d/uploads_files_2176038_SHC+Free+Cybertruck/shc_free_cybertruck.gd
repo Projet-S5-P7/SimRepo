@@ -22,8 +22,8 @@ var droit2: RayCast3D = null
 var gauche1: RayCast3D = null
 var gauche2: RayCast3D = null
 
-const ACCELERATION_MAX = 0.05
-const VITESSE_MAX = 2
+const ACCELERATION_MAX = 3
+const VITESSE_MAX = 1
 const WHEEL_BASE = 0.3  # Distance entre les roues
 
 var speed = 0  # Vitesse actuelle
@@ -58,7 +58,7 @@ func _ready():
 	
 
 func _process(delta):
-	move_vehicle(1, delta)
+	move_vehicle(direction, delta)
 	distance_traveled = position.distance_to(start_position)
 	
 	suiviLigne(delta)
@@ -70,14 +70,12 @@ func _process(delta):
 		return
 
 	# Détecte les collisions avec RayCast3D
-	#if raycast and raycast.is_colliding():
-		#var collision_point = raycast.get_collision_point()
-		#var collision_distance = raycast.global_transform.origin.distance_to(collision_point)
+	if raycast and raycast.is_colliding():
+		var collision_point = raycast.get_collision_point()
+		var collision_distance = raycast.global_transform.origin.distance_to(collision_point)
 		#
-		#if collision_distance <= 1.5:
-			#print("Obstacle détecté !")
-			#start_avoidance(collision_point)
-			#return
+		if collision_distance <= 3:
+			direction = -1
 
 	# Mouvement normal si aucun obstacle n'est détecté
 	#if distance_traveled < max_distance:
@@ -150,7 +148,7 @@ func suiviLigne(delta: float):
 	elif droit2.is_colliding() and droit2.get_collider().name != "StaticFloor":
 		print("Collision détectée à droite 2 avec :", droit2.get_collider().name)
 		# Rotation plus forte vers la gauche pour corriger plus rapidement
-		steer_vehicle(-0.7, delta)
+		steer_vehicle(-0.8, delta)
 
 	elif gauche1.is_colliding() and gauche1.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 1 avec :", gauche1.get_collider().name)
@@ -160,7 +158,7 @@ func suiviLigne(delta: float):
 	elif gauche2.is_colliding() and gauche2.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 2 avec :", gauche2.get_collider().name)
 		# Rotation plus forte vers la droite pour corriger plus rapidement
-		steer_vehicle(0.7, delta)
+		steer_vehicle(0.8, delta)
 		
 		
 func move_vehicle(input_direction: int, delta: float):
