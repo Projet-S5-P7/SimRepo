@@ -61,8 +61,7 @@ func _process(delta):
 	move_vehicle(direction, delta)
 	distance_traveled = position.distance_to(start_position)
 	
-	suiviLigne(delta)
-	return
+	
 	
 	# Si on est en train d'éviter, on suit la trajectoire parabolique
 	if avoiding:
@@ -75,14 +74,13 @@ func _process(delta):
 		var collision_distance = raycast.global_transform.origin.distance_to(collision_point)
 		#
 		if collision_distance <= 3:
-			direction = -1
+			
+			start_avoidance(collision_point)
+			
+	suiviLigne(delta)
+	return
 
-	# Mouvement normal si aucun obstacle n'est détecté
-	#if distance_traveled < max_distance:
-		#var direction = -transform.basis.x.normalized()
-		#position += direction * speed * delta
-	#else:
-		#speed = 0
+
 
 # Initialisation de la manœuvre d’évitement
 func start_avoidance(collision_point: Vector3):
@@ -106,7 +104,7 @@ func follow_avoidance_path(delta):
 	var next_position = avoid_start_position - avoid_direction * x  # Avancement sur la trajectoire en X
 	next_position.z += z  # Applique la hauteur de la parabole
 	
-	move_and_orient(next_position - position)
+	#move_and_orient(next_position - position)
 
 	position = next_position
 
@@ -148,7 +146,7 @@ func suiviLigne(delta: float):
 	elif droit2.is_colliding() and droit2.get_collider().name != "StaticFloor":
 		print("Collision détectée à droite 2 avec :", droit2.get_collider().name)
 		# Rotation plus forte vers la gauche pour corriger plus rapidement
-		steer_vehicle(-0.8, delta)
+		steer_vehicle(-0.9, delta)
 
 	elif gauche1.is_colliding() and gauche1.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 1 avec :", gauche1.get_collider().name)
@@ -158,7 +156,7 @@ func suiviLigne(delta: float):
 	elif gauche2.is_colliding() and gauche2.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 2 avec :", gauche2.get_collider().name)
 		# Rotation plus forte vers la droite pour corriger plus rapidement
-		steer_vehicle(0.8, delta)
+		steer_vehicle(0.9, delta)
 		
 		
 func move_vehicle(input_direction: int, delta: float):
