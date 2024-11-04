@@ -22,8 +22,8 @@ var droit2: RayCast3D = null
 var gauche1: RayCast3D = null
 var gauche2: RayCast3D = null
 
-const ACCELERATION_MAX = 0.001
-const VITESSE_MAX = 0.1
+const ACCELERATION_MAX = 0.1#0.001
+const VITESSE_MAX = 0.7#0.1
 const WHEEL_BASE = 0.3  # Distance entre les roues
 
 var speed = 0  # Vitesse actuelle
@@ -58,6 +58,7 @@ func _ready():
 	
 
 func _process(delta):
+	print("process")
 	move_vehicle(direction, delta)
 	distance_traveled = position.distance_to(start_position)
 	
@@ -106,7 +107,7 @@ func follow_avoidance_path(delta):
 	steer_vehicle(angle, delta)
 
 	# Fin de la manœuvre d'évitement
-	if t >= 1.0:
+	if t >= 1.0001:
 		avoiding = false
 		
 func move_and_orient(direction: Vector3):
