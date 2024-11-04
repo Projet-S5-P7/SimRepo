@@ -22,8 +22,8 @@ var droit2: RayCast3D = null
 var gauche1: RayCast3D = null
 var gauche2: RayCast3D = null
 
-const ACCELERATION_MAX = 3
-const VITESSE_MAX = 1
+const ACCELERATION_MAX = 0.001
+const VITESSE_MAX = 0.1
 const WHEEL_BASE = 0.3  # Distance entre les roues
 
 var speed = 0  # Vitesse actuelle

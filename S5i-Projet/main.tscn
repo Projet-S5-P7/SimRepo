@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bk5l7umgip4v5"]
+[gd_scene load_steps=42 format=3 uid="uid://bk5l7umgip4v5"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_eka3w"]
 [ext_resource type="Script" path="res://addons/finite_state_machine/scripts/finite_state_machine.gd" id="2_wl1fq"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://scripts/fsm/NetworkConnectingState.gd" id="5_itktg"]
 [ext_resource type="Script" path="res://scripts/fsm/NetworkProcessState.gd" id="6_017ts"]
 [ext_resource type="PackedScene" uid="uid://dhw27gk6nbfgu" path="res://assets/3d/uploads_files_2176038_SHC+Free+Cybertruck/SHC Free Cybertruck.blend" id="8_q3755"]
-[ext_resource type="Script" path="res://assets/3d/uploads_files_2176038_SHC+Free+Cybertruck/shc_free_cybertruck.gd" id="8_shnkw"]
 [ext_resource type="PackedScene" uid="uid://vn3e5554t6fn" path="res://assets/blend/plaquette.blend" id="9_saeuv"]
 [ext_resource type="PackedScene" uid="uid://becp6khq8gjql" path="res://assets/blend/parcours.blend" id="10_ax0q4"]
 [ext_resource type="ArrayMesh" uid="uid://ca5fkbafihohs" path="res://assets/blend/parcours.obj" id="11_fifmq"]
@@ -98,6 +97,14 @@ points = PackedVector3Array(398.163, 16.9274, 927.427, -1497.52, -5.64246, 893.5
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bly0c"]
 points = PackedVector3Array(466.031, -5.64246, 588.912, 533.767, 16.9274, 792.007, 533.767, -5.64246, 792.007, 375.778, 16.9274, 588.912, 511.173, 16.9274, 634.05, 375.778, -5.64246, 588.912, 499.884, -5.64246, 792.007, 533.767, -5.64246, 690.413, 398.372, 16.9274, 555.071, 499.884, 16.9274, 792.007, 375.778, -5.64246, 555.071, 533.767, 16.9274, 690.413, 432.225, 16.9274, 566.343, 511.173, -5.64246, 634.05, 432.225, -5.64246, 566.343, 375.778, 16.9274, 555.071, 466.031, 16.9274, 588.912)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_33ivc"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_whpu5"]
+radius = 0.02
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44rhr"]
+albedo_color = Color(1.92523e-07, 0.582416, 0.582575, 1)
+
 [node name="Main" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0100098, 0.0284071, -0.0135775)
 script = ExtResource("1_eka3w")
@@ -152,14 +159,10 @@ shape = SubResource("BoxShape3D_arbh4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20663, 0.184391, 4.96893)
 
 [node name="PiCar" parent="RigidBody3D2" instance=ExtResource("8_q3755")]
-script = ExtResource("8_shnkw")
 metadata/AngleDirection = 0.0
 metadata/vitesse = 15.0
 metadata/sonnard = 12.0
 metadata/detect_ligne = PackedByteArray(0, 0, 0, 0, 0)
-
-[node name="supportBilleMain" type="StaticBody3D" parent="RigidBody3D2/PiCar"]
-transform = Transform3D(0.98182, 0, -0.189815, 0, 1, 0, 0.189815, 0, 0.98182, 0, 0, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="RigidBody3D2/PiCar"]
 transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 1.74845e-07, 1.52855e-14, 1.74846e-07, 0.999999, -0.205094, 0.0746386, 0)
@@ -212,7 +215,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518551, 0, 0)
 shape = SubResource("BoxShape3D_arbh4")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.998987, 0.0444079, -0.00726657, 0.0093271, -0.0463705, 0.998881, 0.0440212, -0.997937, -0.0467377, -2.13476, 4.76096, 2.6629)
+transform = Transform3D(0.0125066, -0.175368, 0.984423, 0.018149, 0.984378, 0.17513, -0.999757, 0.0156761, 0.0154939, 2.1569, 0.516631, 4.91896)
 current = true
 
 [node name="bille" type="RigidBody3D" parent="."]
@@ -288,3 +291,16 @@ shape = SubResource("ConvexPolygonShape3D_to7oe")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="parcours/bodyduparcour"]
 shape = SubResource("ConvexPolygonShape3D_bly0c")
+
+[node name="Boule" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.34622, 0.37915, 4.96479)
+mass = 0.01
+physics_material_override = SubResource("PhysicsMaterial_33ivc")
+continuous_cd = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boule"]
+shape = SubResource("SphereShape3D_whpu5")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Boule/CollisionShape3D"]
+radius = 0.02
+material = SubResource("StandardMaterial3D_44rhr")
