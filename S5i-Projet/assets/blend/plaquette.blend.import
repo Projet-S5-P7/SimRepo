@@ -34,7 +34,9 @@ import_script/path=""
 _subresources={
 "nodes": {
 "PATH:PiCarFrame3_V2b": {
-"generate/physics": true
+"generate/physics": true,
+"physics/physics_material_override": Object(PhysicsMaterial,"resource_local_to_scene":false,"resource_name":"","friction":1.0,"rough":false,"bounce":0.0,"absorbent":false,"script":null)
+
 }
 }
 }
