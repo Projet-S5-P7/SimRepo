@@ -89,7 +89,7 @@ func start_avoidance(collision_point: Vector3):
 	avoid_end_position = avoid_start_position + Vector3(3, 0, 0)  # 3 unités vers l'avant sur l'axe X local
 	avoid_direction = (avoid_end_position - avoid_start_position).normalized()
 	avoid_time = 0.0
-	speed = 0.2  # Vitesse réduite pendant l'évitement
+	#speed = 0.2  # Vitesse réduite pendant l'évitement
 
 # Fonction qui suit la trajectoire d'évitement avec la parabole
 func follow_avoidance_path(delta):
@@ -100,19 +100,14 @@ func follow_avoidance_path(delta):
 	var x = lerp(0, 4, t)  # x passe de 0 à 4 pendant la durée de l'évitement
 	var z = -0.375 * x * (x - 4)  # Calcul de y en fonction de x selon la trajectoire parabolique
 
-	# Calcul de la position sur la parabole
-	var next_position = avoid_start_position - avoid_direction * x  # Avancement sur la trajectoire en X
-	next_position.z += z  # Applique la hauteur de la parabole
 	
-	#move_and_orient(next_position - position)
-
-	position = next_position
+	var dz_dx = -0.375 * (2 * x - 4)
+	var angle = atan2(dz_dx, 1)
+	steer_vehicle(angle, delta)
 
 	# Fin de la manœuvre d'évitement
 	if t >= 1.0:
 		avoiding = false
-		speed = 1  # Rétablit la vitesse normale
-		reset_orientation()
 		
 func move_and_orient(direction: Vector3):
 	# Met à jour la position

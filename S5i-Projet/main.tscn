@@ -137,7 +137,7 @@ shape = SubResource("BoxShape3D_xl6l3")
 environment = SubResource("Environment_c8ocf")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94111, 0.547547, 0.595248)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0217, 0.547547, 4.49234)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526227, 0, 0)
@@ -212,7 +212,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518551, 0, 0)
 shape = SubResource("BoxShape3D_arbh4")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.998987, 0.0444079, -0.00726658, 0.0093271, -0.0463705, 0.998881, 0.0440212, -0.997937, -0.0467377, -2.92921, 4.39354, 1.95965)
+transform = Transform3D(0.998987, 0.0444079, -0.00726657, 0.0093271, -0.0463705, 0.998881, 0.0440212, -0.997937, -0.0467377, -2.13476, 4.76096, 2.6629)
 current = true
 
 [node name="bille" type="RigidBody3D" parent="."]
