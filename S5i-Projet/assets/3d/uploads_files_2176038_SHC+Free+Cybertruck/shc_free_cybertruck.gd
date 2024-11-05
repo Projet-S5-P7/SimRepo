@@ -10,7 +10,9 @@ var avoid_start_position = Vector3()
 var avoid_end_position = Vector3()
 var avoid_direction = Vector3()
 var avoid_time = 0.0
-var avoid_duration = 1.0  # Durée de la manœuvre d’évitement
+var avoid_duration = 15.0
+var parabola_width = 15.0  # Largeur de la parabole
+var parabola_height = 2.0  # Hauteur maximale de la parabole
 
 var original_rotation = Vector3()
 
@@ -31,6 +33,10 @@ var direction = 1  # Direction actuelle du mouvement (1 pour avancer, -1 pour re
 var timer = 0  # Chronomètre pour contrôler la temporisation
 var phase = 0  # 0: accélération, 1: ralentissement
 var current_angle = 0  # Angle de rotation actuel du véhicule
+
+var duration = 10.0
+var total_ticks = 60 * duration
+var trajectory_points = []
 
 
 func _ready():
@@ -94,22 +100,25 @@ func start_avoidance(collision_point: Vector3):
 
 # Fonction qui suit la trajectoire d'évitement avec la parabole
 func follow_avoidance_path(delta):
+
 	avoid_time += delta
-	var t = avoid_time / avoid_duration  # Temps normalisé (0 à 1)
-
-	# Interpolation linéaire pour la position en X le long de la trajectoire
-	var x = lerp(0, 4, t)  # x passe de 0 à 4 pendant la durée de l'évitement
-	var z = -0.375 * x * (x - 4)  # Calcul de y en fonction de x selon la trajectoire parabolique
-
+	var t = avoid_time / avoid_duration
 	
-	var dz_dx = -0.375 * (2 * x - 4)
-	var angle = atan2(dz_dx, 1)
-	steer_vehicle(angle, delta)
-
-	# Fin de la manœuvre d'évitement
-	if t >= 1.0001:
+	if t >= 1.0:
 		avoiding = false
-		
+		return
+	
+	# Calcul de la trajectoire parabolique
+	var x = t * parabola_width
+	var z = -4 * parabola_height * (t * (t - 1))  # Formule de parabole modifiée
+	
+	# Calcul de l'angle de braquage basé sur la dérivée de la parabole
+	var dz_dx = -8 * parabola_height * (t - 0.5) / parabola_width
+	var steer_angle = atan(dz_dx) * 0.5  # Facteur 0.5 pour adoucir le braquage
+	
+	# Utilisation de votre fonction de direction
+	steer_vehicle(steer_angle, delta)
+
 func move_and_orient(direction: Vector3):
 	# Met à jour la position
 	position += direction

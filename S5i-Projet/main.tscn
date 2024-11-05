@@ -241,7 +241,7 @@ shape = SubResource("ConvexPolygonShape3D_to7oe")
 shape = SubResource("ConvexPolygonShape3D_bly0c")
 
 [node name="Boule" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.34459, 0.452641, 4.86781)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.733413, 0.452641, 4.86781)
 collision_layer = 7
 mass = 0.01
 physics_material_override = SubResource("PhysicsMaterial_33ivc")
@@ -254,7 +254,7 @@ radius = 0.02
 material = SubResource("StandardMaterial3D_44rhr")
 
 [node name="PiCar" parent="." instance=ExtResource("8_q3755")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20663, 0.306911, 4.88051)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625268, 0.306911, 4.88051)
 script = ExtResource("10_ir187")
 metadata/AngleDirection = 0.0
 metadata/vitesse = 15.0
