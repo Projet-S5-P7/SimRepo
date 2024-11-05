@@ -12,7 +12,7 @@ var avoid_direction = Vector3()
 var avoid_time = 0.0
 var avoid_duration = 15.0
 var parabola_width = 15.0  # Largeur de la parabole
-var parabola_height = 2.0  # Hauteur maximale de la parabole
+var parabola_height = 1.5  # Hauteur maximale de la parabole
 
 var original_rotation = Vector3()
 
@@ -34,7 +34,7 @@ var timer = 0  # Chronomètre pour contrôler la temporisation
 var phase = 0  # 0: accélération, 1: ralentissement
 var current_angle = 0  # Angle de rotation actuel du véhicule
 
-var duration = 10.0
+var duration = 18.0
 var total_ticks = 60 * duration
 var trajectory_points = []
 
@@ -146,22 +146,22 @@ func suiviLigne(delta: float):
 	elif droit1.is_colliding() and droit1.get_collider().name != "StaticFloor":
 		print("Collision détectée à droite 1 avec :", droit1.get_collider().name)
 		# Rotation légère vers la gauche pour se recentrer
-		steer_vehicle(-0.1, delta)
+		steer_vehicle(-0.15, delta)
 
 	elif droit2.is_colliding() and droit2.get_collider().name != "StaticFloor":
 		print("Collision détectée à droite 2 avec :", droit2.get_collider().name)
 		# Rotation plus forte vers la gauche pour corriger plus rapidement
-		steer_vehicle(-0.9, delta)
+		steer_vehicle(-0.55, delta)
 
 	elif gauche1.is_colliding() and gauche1.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 1 avec :", gauche1.get_collider().name)
 		# Rotation légère vers la droite pour se recentrer
-		steer_vehicle(0.1, delta)
+		steer_vehicle(0.15, delta)
 
 	elif gauche2.is_colliding() and gauche2.get_collider().name != "StaticFloor":
 		print("Collision détectée à gauche 2 avec :", gauche2.get_collider().name)
 		# Rotation plus forte vers la droite pour corriger plus rapidement
-		steer_vehicle(0.9, delta)
+		steer_vehicle(0.55, delta)
 		
 		
 func move_vehicle(input_direction: int, delta: float):
