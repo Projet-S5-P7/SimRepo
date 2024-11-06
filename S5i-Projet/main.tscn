@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bk5l7umgip4v5"]
+[gd_scene load_steps=44 format=3 uid="uid://bk5l7umgip4v5"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_eka3w"]
 [ext_resource type="Script" path="res://addons/finite_state_machine/scripts/finite_state_machine.gd" id="2_wl1fq"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://assets/3d/uploads_files_2176038_SHC+Free+Cybertruck/shc_free_cybertruck.gd" id="10_ir187"]
 [ext_resource type="ArrayMesh" uid="uid://ca5fkbafihohs" path="res://assets/blend/parcours.obj" id="11_fifmq"]
 [ext_resource type="PackedScene" uid="uid://7e1cirhhnuul" path="res://assets/plaquette (2).blend" id="11_y6hs5"]
+[ext_resource type="Script" path="res://temoins.gd" id="12_fxwvj"]
 
 [sub_resource type="GDScript" id="GDScript_d2gei"]
 
@@ -102,6 +103,8 @@ radius = 0.02
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44rhr"]
 albedo_color = Color(1.92523e-07, 0.582416, 0.582575, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_21th2"]
 
 [node name="Main" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0100098, 0.0284071, -0.0135775)
@@ -293,8 +296,53 @@ collision_mask = 3
 collide_with_areas = true
 
 [node name="Camera3D" type="Camera3D" parent="PiCar"]
-transform = Transform3D(0.0125066, -0.175368, 0.984424, 0.018149, 0.984378, 0.175129, -0.999757, 0.015676, 0.015494, 0.95027, 0.168577, 0.0384526)
+transform = Transform3D(0.0125066, -0.175368, 0.984424, 0.018149, 0.984378, 0.175129, -0.999757, 0.015676, 0.015494, 0.95, 0.169, 0)
 current = true
 
 [node name="plaquette (2)" parent="PiCar" instance=ExtResource("11_y6hs5")]
 transform = Transform3D(0.002, 0, 0, 0, 0.002, 0, 0, 0, 0.002, 0.133353, 0.111852, 0)
+
+[node name="temoinscentre" type="Node3D" parent="PiCar" node_paths=PackedStringArray("raycast")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.121069, 0)
+script = ExtResource("12_fxwvj")
+raycast = NodePath("../centre")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PiCar/temoinscentre"]
+transform = Transform3D(0.0834155, 0, 0, 0, 0.0659417, 0, 0, 0, 0.106756, 0.390656, 0, 0)
+mesh = SubResource("BoxMesh_21th2")
+
+[node name="temoingauche2" type="Node3D" parent="PiCar" node_paths=PackedStringArray("raycast")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120728, 0.350852)
+script = ExtResource("12_fxwvj")
+raycast = NodePath("../gauche2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PiCar/temoingauche2"]
+transform = Transform3D(0.0834155, 0, 0, 0, 0.0659417, 0, 0, 0, 0.106756, 0.390656, 0, 0)
+mesh = SubResource("BoxMesh_21th2")
+
+[node name="temoingauche1" type="Node3D" parent="PiCar" node_paths=PackedStringArray("raycast")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120728, 0.183259)
+script = ExtResource("12_fxwvj")
+raycast = NodePath("../gauche1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PiCar/temoingauche1"]
+transform = Transform3D(0.0834155, 0, 0, 0, 0.0659417, 0, 0, 0, 0.106756, 0.390656, 0, 0)
+mesh = SubResource("BoxMesh_21th2")
+
+[node name="temoindroit1" type="Node3D" parent="PiCar" node_paths=PackedStringArray("raycast")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120728, -0.171375)
+script = ExtResource("12_fxwvj")
+raycast = NodePath("../droit1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PiCar/temoindroit1"]
+transform = Transform3D(0.0834155, 0, 0, 0, 0.0659417, 0, 0, 0, 0.106756, 0.390656, 0, 0)
+mesh = SubResource("BoxMesh_21th2")
+
+[node name="temoindroit2" type="Node3D" parent="PiCar" node_paths=PackedStringArray("raycast")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.120728, -0.320004)
+script = ExtResource("12_fxwvj")
+raycast = NodePath("../droit2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PiCar/temoindroit2"]
+transform = Transform3D(0.0834155, 0, 0, 0, 0.0659417, 0, 0, 0, 0.106756, 0.390656, 0, 0)
+mesh = SubResource("BoxMesh_21th2")
