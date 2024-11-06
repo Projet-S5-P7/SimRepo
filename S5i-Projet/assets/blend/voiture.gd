@@ -10,9 +10,9 @@ var avoid_start_position = Vector3()
 var avoid_end_position = Vector3()
 var avoid_direction = Vector3()
 var avoid_time = 0.0
-var avoid_duration = 35.0
+var avoid_duration = 40.0
 var parabola_width = 15.0  # Largeur de la parabole
-var parabola_height = 1.5  # Hauteur maximale de la parabole
+var parabola_height = 4  # Hauteur maximale de la parabole
 
 var original_rotation = Vector3()
 
@@ -86,8 +86,6 @@ func _process(delta):
 			if(speed > -0.05 and recule_fait == 0):
 				direction = -1
 				return
-				return
-				return
 			direction = 1
 			recule_fait = 1
 			start_avoidance(collision_point)
@@ -112,7 +110,7 @@ func follow_avoidance_path(delta):
 	avoid_time += delta
 	var t = avoid_time / avoid_duration
 	
-	if t >= 1.0:
+	if t >= 0.78:#1.0:
 		avoiding = false
 		return
 	
@@ -122,7 +120,7 @@ func follow_avoidance_path(delta):
 	
 	# Calcul de l'angle de braquage basé sur la dérivée de la parabole
 	var dz_dx = -8 * parabola_height * (t - 0.5) / parabola_width
-	var steer_angle = atan(dz_dx) * 0.5  # Facteur 0.5 pour adoucir le braquage
+	var steer_angle = atan(dz_dx) #* 0.5  # Facteur 0.5 pour adoucir le braquage
 	
 	# Utilisation de votre fonction de direction
 	steer_vehicle(steer_angle, delta)
