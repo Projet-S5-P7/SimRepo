@@ -276,22 +276,22 @@ collision_mask = 3
 collide_with_areas = true
 
 [node name="droit1" type="RayCast3D" parent="voiture"]
-transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.00859593, -0.0603426)
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.00859593, -0.0781379)
 collision_mask = 3
 collide_with_areas = true
 
 [node name="droit2" type="RayCast3D" parent="voiture"]
-transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.0110414, -0.0968418)
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.0110414, -0.124561)
 collision_mask = 3
 collide_with_areas = true
 
 [node name="gauche1" type="RayCast3D" parent="voiture"]
-transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.00697178, 0.00103951)
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.00697178, 0.0246463)
 collision_mask = 3
 collide_with_areas = true
 
 [node name="gauche2" type="RayCast3D" parent="voiture"]
-transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.0117615, 0.0273139)
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, -0.0967652, 0.0117615, 0.0770574)
 collision_mask = 3
 collide_with_areas = true
 

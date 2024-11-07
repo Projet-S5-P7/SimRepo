@@ -1,20 +1,16 @@
 extends Node3D
 
 
-var max_distance = 8
 var distance_traveled = 0
 var start_position = Vector3()
 
 var avoiding = false
-var avoid_start_position = Vector3()
-var avoid_end_position = Vector3()
-var avoid_direction = Vector3()
+
 var avoid_time = 0.0
 var avoid_duration = 40.0
 var parabola_width = 15.0  # Largeur de la parabole
 var parabola_height = 4  # Hauteur maximale de la parabole
 
-var original_rotation = Vector3()
 
 
 var raycast: RayCast3D = null
@@ -30,13 +26,10 @@ const WHEEL_BASE = 0.3  # Distance entre les roues
 
 var speed = 0  # Vitesse actuelle
 var direction = 1  # Direction actuelle du mouvement (1 pour avancer, -1 pour reculer)
-var timer = 0  # Chronomètre pour contrôler la temporisation
-var phase = 0  # 0: accélération, 1: ralentissement
+
+
 var current_angle = 0  # Angle de rotation actuel du véhicule
 
-var duration = 18.0
-var total_ticks = 60 * duration
-var trajectory_points = []
 
 
 func _ready():
@@ -61,8 +54,6 @@ func _ready():
 	
 
 	raycast.enabled = true
-	original_rotation = rotation
-	
 	
 
 func _process(delta):
@@ -70,8 +61,9 @@ func _process(delta):
 	move_vehicle(direction, delta)
 	distance_traveled = position.distance_to(start_position)
 	
-	
-	
+	if centre.get_collider().name != "StaticFloor" and  droit1.get_collider().name != "StaticFloor" and droit2.get_collider().name != "StaticFloor" and gauche1.get_collider().name != "StaticFloor" and gauche2.get_collider().name != "StaticFloor":
+		speed = 0 #frein a la fin du parcour
+		return
 	# Si on est en train d'éviter, on suit la trajectoire parabolique
 	if avoiding:
 		follow_avoidance_path(delta)
@@ -98,9 +90,6 @@ func _process(delta):
 # Initialisation de la manœuvre d’évitement
 func start_avoidance(collision_point: Vector3):
 	avoiding = true
-	avoid_start_position = position
-	avoid_end_position = avoid_start_position + Vector3(3, 0, 0)  # 3 unités vers l'avant sur l'axe X local
-	avoid_direction = (avoid_end_position - avoid_start_position).normalized()
 	avoid_time = 0.0
 	#speed = 0.2  # Vitesse réduite pendant l'évitement
 
