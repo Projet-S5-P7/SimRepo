@@ -1,6 +1,7 @@
 extends Node3D
 
 
+
 var distance_traveled = 0
 var start_position = Vector3()
 
@@ -24,11 +25,13 @@ const ACCELERATION_MAX = 0.01#0.001
 const VITESSE_MAX = 0.1#0.1
 const WHEEL_BASE = 0.3  # Distance entre les roues
 
-var speed = 0  # Vitesse actuelle
-var direction = 1  # Direction actuelle du mouvement (1 pour avancer, -1 pour reculer)
+var speed = 0
+var direction = 1
+var current_angle = 0
 
-
-var current_angle = 0  # Angle de rotation actuel du véhicule
+# WebSocket variables
+var websocket_server: WebSocketMultiplayerPeer = null
+var connected_clients = {}
 
 
 
@@ -38,36 +41,71 @@ func _ready():
 	Engine.time_scale = 2.0
 
 
-	raycast = $RayCast3D 
-	assert(raycast != null, "Le RayCast3D n'a pas été trouvé !")
-	
+	# Initialiser les capteurs
+	raycast = $RayCast3D
 	centre = $centre
-	assert(centre != null, "Le centre n'a pas été trouvé !")
 	droit1 = $droit1
-	assert(droit1 != null, "Le centre n'a pas été trouvé !")
 	droit2 = $droit2
-	assert(droit2 != null, "Le centre n'a pas été trouvé !")
 	gauche1 = $gauche1
-	assert(gauche1 != null, "Le centre n'a pas été trouvé !")
 	gauche2 = $gauche2
-	assert(gauche2 != null, "Le centre n'a pas été trouvé !")
-	
 
+# Initialiser le serveur WebSocket
+	websocket_server = WebSocketMultiplayerPeer.new()
+	websocket_server.create_server(12345)  # Port 12345
+	#get_tree().network_peer = websocket_server # Utiliser le SceneTree pour configurer le peer
+
+	print("Serveur WebSocket démarré sur le port 12345")
+
+	# Activer les RayCasts
 	raycast.enabled = true
 	
 
 func _process(delta):
-	print("process")
-	move_vehicle(direction, delta)
-	distance_traveled = position.distance_to(start_position)
-	
-	if centre.get_collider().name != "StaticFloor" and  droit1.get_collider().name != "StaticFloor" and droit2.get_collider().name != "StaticFloor" and gauche1.get_collider().name != "StaticFloor" and gauche2.get_collider().name != "StaticFloor":
-		speed = 0 #frein a la fin du parcour
-		return
-	# Si on est en train d'éviter, on suit la trajectoire parabolique
+	var effective_delta = delta
+	# Traiter les événements WebSocket
+	while websocket_server.get_available_packet_count() > 0:
+		var packet = websocket_server.get_packet()
+		var client_id = websocket_server.get_packet_peer()
+		handle_received_packet(client_id, packet)
+
+	var line_followers
+	var distance
+
+	if connected_clients.size() == 0:
+		# Pas de client connecté, utiliser les RayCasts locaux
+		line_followers = [
+				centre.is_colliding(),
+				droit1.is_colliding(),
+				droit2.is_colliding(),
+				gauche1.is_colliding(),
+				gauche2.is_colliding()
+			]
+		distance = position.distance_to(start_position)
+	else:
+		# Utiliser les données du premier client connecté
+		var client_data = connected_clients.values()[0]
+		line_followers = client_data.get("line_follower", [])
+		distance = client_data.get("distance", 0.0)
+		effective_delta = client_data.get("delta", 0.0)
+
+		# Envoyer le JSON avec la vitesse et l'angle actuel
+		var data_to_send = {
+			"speed": speed,
+			"angle": current_angle
+		}
+		var json = JSON.new()
+		var data_to_send_str = json.print(data_to_send)
+		websocket_server.send_packet(data_to_send_str, client_data["id"])
+		
+	move_vehicle(direction, effective_delta)
+
+	# Appliquer la logique de suivi de ligne ou d'évitement
 	if avoiding:
-		follow_avoidance_path(delta)
+		follow_avoidance_path(effective_delta)
 		return
+	
+
+	
 
 	# Détecte les collisions avec RayCast3D
 	if raycast and raycast.is_colliding():
@@ -82,7 +120,7 @@ func _process(delta):
 			recule_fait = 1
 			start_avoidance(collision_point)
 			
-	suiviLigne(delta)
+	suiviLigne(effective_delta)
 	return
 
 
@@ -184,3 +222,11 @@ func steer_vehicle(steer_angle: float, delta: float):
 		var rotation_matrix = Basis(Vector3(0, 1, 0), angular_velocity * delta * direction)
 		transform.basis = rotation_matrix * transform.basis
 	
+func handle_received_packet(client_id, packet):
+	var json = JSON.new()
+	var message = json.parse(packet)
+	if message.error == OK:
+		var data = message.result
+		connected_clients[client_id] = data
+		connected_clients[client_id]["id"] = client_id
+		print("Données reçues du client :", data)
