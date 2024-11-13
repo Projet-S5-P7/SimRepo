@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://becp6khq8gjql" path="res://assets/blend/parcours.blend" id="10_ax0q4"]
 [ext_resource type="ArrayMesh" uid="uid://ca5fkbafihohs" path="res://assets/blend/parcours.obj" id="11_fifmq"]
 [ext_resource type="PackedScene" uid="uid://7e1cirhhnuul" path="res://assets/plaquette (2).blend" id="11_y6hs5"]
-[ext_resource type="Script" path="res://temoins.gd" id="12_fxwvj"]
 [ext_resource type="PackedScene" uid="uid://dn0km5blc0he6" path="res://assets/blend/voiture.blend" id="13_n6p5i"]
 [ext_resource type="Script" path="res://label.gd" id="13_prx0b"]
 
@@ -104,6 +103,35 @@ radius = 0.02
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44rhr"]
 albedo_color = Color(1.92523e-07, 0.582416, 0.582575, 1)
+
+[sub_resource type="GDScript" id="GDScript_qug1i"]
+script/source = "extends Node3D
+
+@export var raycast: RayCast3D  # Pour assigner le RayCast dans l'inspecteur
+@onready var mesh = $MeshInstance3D  # Référence au MeshInstance3D
+
+# Couleurs
+var normal_color = Color(1, 1, 1)  # Blanc
+var detect_color = Color(0, 1, 0)  # Vert
+
+# Matériau standard
+var material: StandardMaterial3D
+
+func _ready():
+	# Vérification que le RayCast est assigné
+	assert(raycast != null, \"Il faut assigner un RayCast dans l'inspecteur!\")
+	
+	# Création et configuration du matériau
+	material = StandardMaterial3D.new()
+	mesh.material_override = material
+	material.albedo_color = normal_color
+
+func _process(_delta):
+	if raycast.is_colliding() and raycast.get_collider().name != \"StaticFloor\":
+		material.albedo_color = detect_color  # Change en vert
+	else:
+		material.albedo_color = normal_color  # Retourne à la couleur normale
+"
 
 [sub_resource type="BoxMesh" id="BoxMesh_21th2"]
 
@@ -292,7 +320,7 @@ transform = Transform3D(0.00133333, 0, 0, 0, 0.00133333, 0, 0, 0, 0.00133333, 0.
 
 [node name="temoinscentre" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0877417, -0.0365908)
-script = ExtResource("12_fxwvj")
+script = SubResource("GDScript_qug1i")
 raycast = NodePath("../centre")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoinscentre"]
@@ -301,7 +329,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoingauche2" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, 0.19731)
-script = ExtResource("12_fxwvj")
+script = SubResource("GDScript_qug1i")
 raycast = NodePath("../gauche2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoingauche2"]
@@ -310,7 +338,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoingauche1" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, 0.0855818)
-script = ExtResource("12_fxwvj")
+script = SubResource("GDScript_qug1i")
 raycast = NodePath("../gauche1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoingauche1"]
@@ -319,7 +347,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoindroit1" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, -0.150841)
-script = ExtResource("12_fxwvj")
+script = SubResource("GDScript_qug1i")
 raycast = NodePath("../droit1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoindroit1"]
@@ -328,7 +356,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoindroit2" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, -0.249927)
-script = ExtResource("12_fxwvj")
+script = SubResource("GDScript_qug1i")
 raycast = NodePath("../droit2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoindroit2"]
