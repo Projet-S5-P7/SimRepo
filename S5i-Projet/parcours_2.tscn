@@ -1,18 +1,18 @@
-[gd_scene load_steps=46 format=3 uid="uid://bk5l7umgip4v5"]
+[gd_scene load_steps=46 format=3 uid="uid://dxu434dpo4lu4"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_eka3w"]
-[ext_resource type="Script" path="res://addons/finite_state_machine/scripts/finite_state_machine.gd" id="2_wl1fq"]
-[ext_resource type="Script" path="res://scripts/fsm/NetworkInitState.gd" id="3_lglb8"]
-[ext_resource type="Script" path="res://scripts/fsm/NetworkWaitingState.gd" id="4_s7v0d"]
-[ext_resource type="Script" path="res://scripts/fsm/NetworkConnectingState.gd" id="5_itktg"]
-[ext_resource type="Script" path="res://scripts/fsm/NetworkProcessState.gd" id="6_017ts"]
-[ext_resource type="Script" path="res://assets/blend/voiture.gd" id="10_aq60j"]
-[ext_resource type="PackedScene" uid="uid://becp6khq8gjql" path="res://assets/blend/parcours.blend" id="10_ax0q4"]
-[ext_resource type="ArrayMesh" uid="uid://ca5fkbafihohs" path="res://assets/blend/parcours.obj" id="11_fifmq"]
-[ext_resource type="PackedScene" uid="uid://7e1cirhhnuul" path="res://assets/plaquette (2).blend" id="11_y6hs5"]
-[ext_resource type="Script" path="res://temoins.gd" id="12_fxwvj"]
-[ext_resource type="PackedScene" uid="uid://dn0km5blc0he6" path="res://assets/blend/voiture.blend" id="13_n6p5i"]
-[ext_resource type="Script" path="res://label.gd" id="13_prx0b"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_2n16c"]
+[ext_resource type="Script" path="res://addons/finite_state_machine/scripts/finite_state_machine.gd" id="2_lh5kr"]
+[ext_resource type="Script" path="res://scripts/fsm/NetworkInitState.gd" id="3_be82e"]
+[ext_resource type="Script" path="res://scripts/fsm/NetworkWaitingState.gd" id="4_bqb7q"]
+[ext_resource type="Script" path="res://scripts/fsm/NetworkConnectingState.gd" id="5_jbs38"]
+[ext_resource type="Script" path="res://scripts/fsm/NetworkProcessState.gd" id="6_cc8rn"]
+[ext_resource type="PackedScene" uid="uid://becp6khq8gjql" path="res://assets/blend/parcours.blend" id="7_f3o2l"]
+[ext_resource type="ArrayMesh" uid="uid://ca5fkbafihohs" path="res://assets/blend/parcours.obj" id="8_uy346"]
+[ext_resource type="PackedScene" uid="uid://dn0km5blc0he6" path="res://assets/blend/voiture.blend" id="9_nhxoi"]
+[ext_resource type="Script" path="res://assets/blend/voiture.gd" id="10_t2rbv"]
+[ext_resource type="PackedScene" uid="uid://7e1cirhhnuul" path="res://assets/plaquette (2).blend" id="11_bvw3y"]
+[ext_resource type="Script" path="res://temoins.gd" id="12_f8l0y"]
+[ext_resource type="Script" path="res://label.gd" id="13_r8s36"]
 
 [sub_resource type="GDScript" id="GDScript_d2gei"]
 
@@ -110,25 +110,25 @@ albedo_color = Color(1.92523e-07, 0.582416, 0.582575, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2d1kd"]
 bg_color = Color(0.976469, 0.976469, 0.976469, 1)
 
-[node name="Main" type="Node3D"]
+[node name="parcours2" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0100098, 0.0284071, -0.0135775)
-script = ExtResource("1_eka3w")
+script = ExtResource("1_2n16c")
 
 [node name="NetworkFSM" type="Node" parent="." node_paths=PackedStringArray("current_state")]
-script = ExtResource("2_wl1fq")
+script = ExtResource("2_lh5kr")
 current_state = NodePath("NetworkWaitingState")
 
 [node name="NetworkInitState" type="Node" parent="NetworkFSM"]
-script = ExtResource("3_lglb8")
+script = ExtResource("3_be82e")
 
 [node name="NetworkWaitingState" type="Node" parent="NetworkFSM"]
-script = ExtResource("4_s7v0d")
+script = ExtResource("4_bqb7q")
 
 [node name="NetworkConnectingState" type="Node" parent="NetworkFSM"]
-script = ExtResource("5_itktg")
+script = ExtResource("5_jbs38")
 
 [node name="NetworkProcessState" type="Node" parent="NetworkFSM"]
-script = ExtResource("6_017ts")
+script = ExtResource("6_cc8rn")
 
 [node name="NetworkDisconnectingState" type="Node" parent="NetworkFSM"]
 script = SubResource("GDScript_d2gei")
@@ -149,7 +149,7 @@ shape = SubResource("BoxShape3D_xl6l3")
 environment = SubResource("Environment_c8ocf")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0217, 0.727993, 4.57761)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0287, 0.727993, 3.79513)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526227, 0, -0.00608015)
@@ -157,6 +157,18 @@ layers = 9
 mesh = SubResource("BoxMesh_qohui")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518551, 0, 0)
+shape = SubResource("BoxShape3D_arbh4")
+
+[node name="RigidBody3D3" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.22075, 0.547547, 0.595248)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526227, 0, 0)
+layers = 9
+mesh = SubResource("BoxMesh_qohui")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.518551, 0, 0)
 shape = SubResource("BoxShape3D_arbh4")
 
@@ -172,16 +184,16 @@ skeleton = NodePath("")
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 shape = SubResource("SphereShape3D_e8s7s")
 
-[node name="parcours" parent="." instance=ExtResource("10_ax0q4")]
+[node name="parcours" parent="." instance=ExtResource("7_f3o2l")]
 physics_interpolation_mode = 1
-transform = Transform3D(0.0039857, 0, 0, 0, 0.0209249, 0, 0, 0, 0.00298927, -0.347773, -0.146051, 3.20161)
+transform = Transform3D(0.006, 0, 0, 0, -0.032, 7.54979e-10, 0, -4.83187e-09, -0.005, -0.347773, 0.00523893, 0.96354)
 
 [node name="bodyduparcour" type="StaticBody3D" parent="parcours"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.89573, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="parcours/bodyduparcour"]
 layers = 7
-mesh = ExtResource("11_fifmq")
+mesh = ExtResource("8_uy346")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D17" type="CollisionShape3D" parent="parcours/bodyduparcour"]
@@ -236,7 +248,7 @@ shape = SubResource("ConvexPolygonShape3D_to7oe")
 shape = SubResource("ConvexPolygonShape3D_bly0c")
 
 [node name="Boule" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.733413, 0.452641, 4.86781)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.326836, 0.452641, 3.1672)
 collision_layer = 7
 mass = 0.01
 physics_material_override = SubResource("PhysicsMaterial_33ivc")
@@ -248,9 +260,9 @@ shape = SubResource("SphereShape3D_whpu5")
 radius = 0.02
 material = SubResource("StandardMaterial3D_44rhr")
 
-[node name="voiture" parent="." instance=ExtResource("13_n6p5i")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.599825, 0.317455, 4.9354)
-script = ExtResource("10_aq60j")
+[node name="voiture" parent="." instance=ExtResource("9_nhxoi")]
+transform = Transform3D(-0.020472, 0, 1.49986, 0, 1.5, 0, -1.49986, 0, -0.020472, 1.90173, 0.317455, 0.33449)
+script = ExtResource("10_t2rbv")
 
 [node name="RayCast3D" type="RayCast3D" parent="voiture"]
 transform = Transform3D(-0.666667, 5.82819e-08, 0, -5.82819e-08, -0.666667, 1.16563e-07, 1.01903e-14, 1.16564e-07, 0.666666, -0.119767, 0.04273, -0.0365908)
@@ -284,15 +296,15 @@ collision_mask = 3
 collide_with_areas = true
 
 [node name="Camera3D" type="Camera3D" parent="voiture"]
-transform = Transform3D(0.00833773, -0.116912, 0.656282, 0.0120993, 0.656252, 0.116753, -0.666505, 0.0104507, 0.0103293, 0.650295, 0.162538, -0.0365911)
+transform = Transform3D(0.00833773, -0.116912, 0.656282, 0.0120993, 0.656252, 0.116753, -0.666505, 0.0104507, 0.0103293, 0.650295, 0.105638, -0.0365908)
 current = true
 
-[node name="plaquette (2)" parent="voiture" instance=ExtResource("11_y6hs5")]
+[node name="plaquette (2)" parent="voiture" instance=ExtResource("11_bvw3y")]
 transform = Transform3D(0.00133333, 0, 0, 0, 0.00133333, 0, 0, 0, 0.00133333, 0.101529, 0.067539, -0.0365908)
 
 [node name="temoinscentre" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0877417, -0.0365908)
-script = ExtResource("12_fxwvj")
+script = ExtResource("12_f8l0y")
 raycast = NodePath("../centre")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoinscentre"]
@@ -301,7 +313,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoingauche2" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, 0.19731)
-script = ExtResource("12_fxwvj")
+script = ExtResource("12_f8l0y")
 raycast = NodePath("../gauche2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoingauche2"]
@@ -310,7 +322,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoingauche1" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, 0.0855818)
-script = ExtResource("12_fxwvj")
+script = ExtResource("12_f8l0y")
 raycast = NodePath("../gauche1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoingauche1"]
@@ -319,7 +331,7 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoindroit1" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, -0.150841)
-script = ExtResource("12_fxwvj")
+script = ExtResource("12_f8l0y")
 raycast = NodePath("../droit1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoindroit1"]
@@ -328,28 +340,25 @@ mesh = SubResource("BoxMesh_21th2")
 
 [node name="temoindroit2" type="Node3D" parent="voiture" node_paths=PackedStringArray("raycast")]
 transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0.0169622, -0.0875144, -0.249927)
-script = ExtResource("12_fxwvj")
+script = ExtResource("12_f8l0y")
 raycast = NodePath("../droit2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="voiture/temoindroit2"]
 transform = Transform3D(0.0834155, 0, 0, 0, 0.0659417, 0, 0, 0, 0.106756, 0.390656, 0, 0)
 mesh = SubResource("BoxMesh_21th2")
 
+[node name="Label" type="Label" parent="voiture"]
+offset_left = 1818.0
+offset_top = 5.0
+offset_right = 1858.0
+offset_bottom = 28.0
+script = ExtResource("13_r8s36")
+
 [node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 1818.0
+offset_top = 5.0
+offset_right = 1858.0
+offset_bottom = 28.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_2d1kd")
-script = ExtResource("13_prx0b")
-
-[node name="RigidBody3D2" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.46256, 0.574678, 1.86786)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D2"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-layers = 9
-mesh = SubResource("BoxMesh_qohui")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-shape = SubResource("BoxShape3D_arbh4")
+script = ExtResource("13_r8s36")

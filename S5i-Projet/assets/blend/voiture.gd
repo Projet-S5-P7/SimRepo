@@ -7,9 +7,9 @@ var start_position = Vector3()
 var avoiding = false
 
 var avoid_time = 0.0
-var avoid_duration = 40.0
-var parabola_width = 15.0  # Largeur de la parabole
-var parabola_height = 4  # Hauteur maximale de la parabole
+var avoid_duration = 26.0
+var parabola_width = 12.0  # Largeur de la parabole
+var parabola_height = 1.2  # Hauteur maximale de la parabole
 
 
 
@@ -26,6 +26,7 @@ const WHEEL_BASE = 0.3  # Distance entre les roues
 
 var speed = 0  # Vitesse actuelle
 var direction = 1  # Direction actuelle du mouvement (1 pour avancer, -1 pour reculer)
+var recule_fait = 0
 
 
 var current_angle = 0  # Angle de rotation actuel du véhicule
@@ -57,7 +58,6 @@ func _ready():
 	
 
 func _process(delta):
-	print("process")
 	move_vehicle(direction, delta)
 	distance_traveled = position.distance_to(start_position)
 	
@@ -68,21 +68,27 @@ func _process(delta):
 	if avoiding:
 		follow_avoidance_path(delta)
 		return
+	
+	if (speed > 0):	
+		suiviLigne(delta)
+		print("suiviLigne")
 
 	# Détecte les collisions avec RayCast3D
 	if raycast and raycast.is_colliding():
 		var collision_point = raycast.get_collision_point()
 		var collision_distance = raycast.global_transform.origin.distance_to(collision_point)
-		var recule_fait = 0
 		if collision_distance <= 3:
 			if(speed > -0.05 and recule_fait == 0):
 				direction = -1
 				return
 			direction = 1
 			recule_fait = 1
-			start_avoidance(collision_point)
-			
-	suiviLigne(delta)
+			if(speed > 0):
+				start_avoidance(collision_point)
+	
+	
+	if(avoiding ==true):
+		print("avoiding")
 	return
 
 
@@ -99,8 +105,9 @@ func follow_avoidance_path(delta):
 	avoid_time += delta
 	var t = avoid_time / avoid_duration
 	
-	if t >= 0.78:#1.0:
+	if t >= 0.985:#1.0:
 		avoiding = false
+		recule_fait = 0
 		return
 	
 	# Calcul de la trajectoire parabolique
@@ -183,4 +190,7 @@ func steer_vehicle(steer_angle: float, delta: float):
 		# Appliquer la rotation au véhicule
 		var rotation_matrix = Basis(Vector3(0, 1, 0), angular_velocity * delta * direction)
 		transform.basis = rotation_matrix * transform.basis
+		
+func is_avoiding() -> bool:
+	return avoiding
 	
