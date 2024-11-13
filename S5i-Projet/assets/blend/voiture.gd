@@ -31,12 +31,23 @@ var recule_fait = 0
 
 var current_angle = 0  # Angle de rotation actuel du véhicule
 
+# WebSocket variables
+var websocket_server: WebSocketMultiplayerPeer = null
+var connected_clients = {}
+
 
 
 func _ready():
 	start_position = position
 	# Accélère le jeu (par exemple, 2x plus rapide)
 	Engine.time_scale = 2.0
+	
+	# Initialiser le serveur WebSocket
+	websocket_server = WebSocketMultiplayerPeer.new()
+	websocket_server.create_server(12345)  # Port 12345
+	#get_tree().network_peer = websocket_server # Utiliser le SceneTree pour configurer le peer
+
+	print("Serveur WebSocket démarré sur le port 12345")
 
 
 	raycast = $RayCast3D 
@@ -58,6 +69,46 @@ func _ready():
 	
 
 func _process(delta):
+	print("ca print")
+	
+	
+	var effective_delta = delta
+	# Traiter les événements WebSocket
+	while websocket_server.get_available_packet_count() > 0:
+		var packet = websocket_server.get_packet()
+		var client_id = websocket_server.get_packet_peer()
+		handle_received_packet(client_id, packet)
+
+	var line_followers
+	var distance
+
+	if connected_clients.size() == 0:
+		# Pas de client connecté, utiliser les RayCasts locaux
+		line_followers = [
+				centre.is_colliding(),
+				droit1.is_colliding(),
+				droit2.is_colliding(),
+				gauche1.is_colliding(),
+				gauche2.is_colliding()
+			]
+		distance = position.distance_to(start_position)
+	else:
+		# Utiliser les données du premier client connecté
+		var client_data = connected_clients.values()[0]
+		line_followers = client_data.get("line_follower", [])
+		distance = client_data.get("distance", 0.0)
+		effective_delta = client_data.get("delta", 0.0)
+
+		# Envoyer le JSON avec la vitesse et l'angle actuel
+		var data_to_send = {
+			"speed": speed,
+			"angle": current_angle
+		}
+		var json = JSON.new()
+		var data_to_send_str = json.print(data_to_send)
+		websocket_server.send_packet(data_to_send_str, client_data["id"])
+
+	
 	move_vehicle(direction, delta)
 	distance_traveled = position.distance_to(start_position)
 	
@@ -193,4 +244,15 @@ func steer_vehicle(steer_angle: float, delta: float):
 		
 func is_avoiding() -> bool:
 	return avoiding
+	
+	
+	
+func handle_received_packet(client_id, packet):
+	var json = JSON.new()
+	var message = json.parse(packet)
+	if message.error == OK:
+		var data = message.result
+		connected_clients[client_id] = data
+		connected_clients[client_id]["id"] = client_id
+		print("Données reçues du client :", data)
 	
