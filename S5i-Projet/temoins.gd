@@ -20,7 +20,7 @@ func _ready():
 	material.albedo_color = normal_color
 
 func _process(_delta):
-	if raycast.is_colliding() and raycast.get_collider().name != "StaticFloor":
+	if raycast != null and raycast.is_colliding() and raycast.get_collider().name != "StaticFloor":
 		material.albedo_color = detect_color  # Change en vert
 	else:
 		material.albedo_color = normal_color  # Retourne à la couleur normale
